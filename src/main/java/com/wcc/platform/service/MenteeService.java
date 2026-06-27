@@ -146,7 +146,9 @@ public class MenteeService {
   }
 
   private Mentee handleMenteeWithId(final Mentee mentee) {
-    if (menteeRepository.findById(mentee.getId()).isPresent()) {
+    final var existingMentee = menteeRepository.findById(mentee.getId());
+    if (existingMentee.isPresent()) {
+      mentee.setMemberTypes(mergeMemberTypes(existingMentee.get().getMemberTypes()));
       return menteeRepository.update(mentee.getId(), mentee);
     }
 
